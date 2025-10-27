@@ -1,0 +1,7 @@
+data:
+  path: "datasets/20210703_greenhouse_data.csv"
+
+mqtt:
+  broker: "192.168.0.10"          # IP do broker MQTT
+  topic_sub: "estufa/sensores"
+  topic_pub: "estufa/atuadores"
