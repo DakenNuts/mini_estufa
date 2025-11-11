@@ -1,7 +1,9 @@
 data:
-  path: "datasets/20210703_greenhouse_data.csv"
+  path: "datasets/plant_health_data.csv"
+  soil_col: "Soil_Moisture"
+  soil_thresh: 30
 
 mqtt:
-  broker: "192.168.0.10"          # IP do broker MQTT
+  broker: "broker.hivemq.com"          # IP do broker MQTT ex:"192.168.0.10"
   topic_sub: "estufa/sensores"
   topic_pub: "estufa/atuadores"

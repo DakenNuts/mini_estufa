@@ -1,2 +1,5 @@
 greenhous_temperature_celsius,greenhouse_humidity_percentage,greenhouse_illuminance_lux,created,predicted_temperature
 25.3,55.0,300,2025-10-21 22:29:43.866952,25.26444624980046
+27.5,60.0,700,22.0,2025-11-07 11:02:50.989568,🌿 Não regar
+27.5,60.0,700,22.0,2025-11-07 12:22:33.403580,🌿 Não regar
+27.5,60.0,700,22.0,2025-11-09 16:58:56.888848,Regar agora

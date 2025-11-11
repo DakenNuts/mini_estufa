@@ -1,36 +1,44 @@
-import pandas as pd
-import lightgbm as lgb
-from sklearn.metrics import mean_squared_error
-import math
 import joblib
 import os
+import math
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import lightgbm as lgb
 
 models_dir = "models"
 os.makedirs(models_dir, exist_ok=True)
 model_path = os.path.join(models_dir, "modelo_estufa.pkl")
+features_path = os.path.join(models_dir, "features.joblib")
 
-# Carrega os dados
-X_train = pd.read_csv('X_train.csv')
-X_test = pd.read_csv('X_test.csv')
-y_train = pd.read_csv('y_train.csv').values.ravel()
-y_test = pd.read_csv('y_test.csv').values.ravel()
+print("Carregando dados pré-processados...")
+data = joblib.load("data/prepared.joblib")
+X_train, X_test, y_train, y_test = data["X_train"], data["X_test"], data["y_train"], data["y_test"]
+feature_cols = data["feature_cols"]
 
-# Cria modelo LightGBM
-model = lgb.LGBMRegressor(
-    objective='regression',
-    learning_rate=0.1,
+print("Treinando modelo de classificação (regar/não regar)...")
+
+model = lgb.LGBMClassifier(
+    objective="binary",
+    learning_rate=0.05,
     n_estimators=500,
-    max_depth=5
+    num_leaves=64,
+    max_depth=-1
 )
 
-# Treina modelo
 model.fit(X_train, y_train)
 
-# Avalia
+# Avaliação
 y_pred = model.predict(X_test)
-rmse = math.sqrt(mean_squared_error(y_test, y_pred))
-print(f"RMSE no teste: {rmse:.2f} °C")
+acc = accuracy_score(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred)
+
+print(f"\nAcurácia no teste: {acc*100:.2f}%")
+print("\nMatriz de confusão:")
+print(cm)
+print("\nRelatório de classificação:")
+print(classification_report(y_test, y_pred))
 
 # Salva modelo
 joblib.dump(model, model_path)
-print(f"Modelo salvo em '{model_path}'")
+joblib.dump(feature_cols, features_path)
+print(f"\nModelo salvo em '{model_path}'")
+print(f"Features salvas em '{features_path}'")
